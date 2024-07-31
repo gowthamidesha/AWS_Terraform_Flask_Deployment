@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     environment {
-        AWS_ACCESS_KEY_ID = credentials('your-aws-access-key-id')
-        AWS_SECRET_ACCESS_KEY = credentials('your-aws-secret-access-key')
+        AWS_ACCESS_KEY_ID = credentials('aws-credentials')
+        AWS_SECRET_ACCESS_KEY = credentials('aws-credentials')
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/yourusername/AWS_Terraform_Flask_Deployment.git'
+                git 'https://github.com/gowthamidesha/AWS_Terraform_Flask_Deployment.git'
             }
         }
 
@@ -30,6 +30,13 @@ pipeline {
                 sh 'terraform apply -input=false -auto-approve tfplan'
             }
         }
+
+        stage('Verification') {  // New stage for verification
+            steps {
+                echo 'Verifying deployment...'
+                // Add verification steps here, e.g., using AWS CLI to check EC2 status
+            }
+        }
     }
 
     post {
@@ -38,3 +45,4 @@ pipeline {
         }
     }
 }
+
